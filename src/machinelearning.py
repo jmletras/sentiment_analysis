@@ -6,10 +6,12 @@ Created on 13/10/2013
 '''
 
 import sentence_database, sentiment_lexicon, re
+import nltk
+
 from datetime import datetime
 from collections import defaultdict
 from nltk.stem.wordnet import WordNetLemmatizer
-import nltk
+
 from sets import Set
 from nltk.corpus import stopwords
 from nltk.chunk import ne_chunk
@@ -23,20 +25,15 @@ from sklearn.linear_model.stochastic_gradient import SGDClassifier
 #from nltk.collocations import BigramCollocationFinder
 import string, math
 from bs4 import BeautifulSoup
-import urllib2, httplib
+import urllib.request, httplib2
 import winsound
 import parse_tree
 
 
 #bigram_measures = nltk.collocations.BigramAssocMeasures()
-
-
-
-
-
     
 def process_database_sentences():
-    print "Generating features..."
+    print ("Generating features....")
     
     #Delta Calculation
     #global positive_sentences
@@ -45,7 +42,7 @@ def process_database_sentences():
     #negative_sentences = 0
     
     for line in sentences:
-        print "\n", line
+        print ('\n' + line)
         sentence = line[3]
         sentence_class = line[4]
         
@@ -60,7 +57,7 @@ def process_database_sentences():
         #sentiment_words = sentence_features[4]
         tree = sentence_features[5]
         
-        print "Teste de palavras sentimento", sentiment_words
+        print ("Teste de palavras sentimento " + sentiment_words)
         
         if len(tokenized_sentence) >0:
             tokenized_sentences[line[0]] = tokenized_sentence,  sentence_class, uppercase_words, url, entities, sentiment_words, tree   
@@ -99,7 +96,7 @@ def process_database_sentences():
     #write_list_to_file(list(all_words), "Bigrams_list")   
     #write_list_to_file(scored, "Bigrams_frequency")
     #print "Unigram Features saved to a file..."
-    print "Foram gravadas " + str(len(tokenized_sentences)) + " blocos de texto e " + str(len(all_words)) + " palavras. "   
+    print ("Foram gravadas " + str(len(tokenized_sentences)) + " blocos de texto e " + str(len(all_words)) + " palavras. " ) 
     #return all_words.keys()[:size]
     exit
 
@@ -121,10 +118,10 @@ def process_single_sentence(sentence, show_info=True):
     
     tree = parse_tree.generateParseTree(tokens)
     if show_info==True:
-        print tree
+        print (tree)
     entities = parse_tree.extract_entity_names(tree)
     if show_info==True:
-        print "Entidades encontradas: ", str(entities)
+        print ("Entidades encontradas: ", str(entities))
     
     sentiment_words = parse_tree.getSentimentWordsFromNodes(tree)
     sentiment_words = [l.lemmatize(s.lower()) for s in sentiment_words if s not in stopwords.words("english")]
@@ -161,8 +158,8 @@ def get_sentencefeatures(sentence_tokens, uppercase = "", url = "", entities = "
     features = {}
     
     if show_info==True:
-        print "Sentence Tokens"
-        print sentence_tokens
+        print ("Sentence Tokens")
+        print (sentence_tokens)
     
     
     
