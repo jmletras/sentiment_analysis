@@ -1,0 +1,145 @@
+2	To
+24/7	Twenty-four hours a day, seven days a week
+411	Information
+AFAIK	As far as I know
+AFK	Away from keyboard
+Afro	Natural bush-like hairstyle
+AIM	AOL Instant Messenger
+AKA	Also known as
+AOL	America Online
+ASAP	As soon as possible
+ASL	Age, sex, location
+ATM	At the moment
+b/c	Because
+b/w	Between
+b4	Before
+BBIAB	Be back in a bit
+BBL	Be back later
+BBS	Be back soon
+BCC	Blind carbon copy
+bf	Boyfriend
+BFF	Best friends forever
+Bling	Overly flashy jewelry
+blog	Web log
+BRB	Be right back
+BTW	By the way
+Buck	Dollar
+Cab	Taxi
+CC	Carbon copy
+CTN	Can't talk now
+cya	See ya
+CYE	Check your e-mail
+Dis	Disrespect
+DIY	Do it yourself
+dl	Download
+Dope	Drug
+ETA	Estimated time of arrival
+f	Female
+FAQ	Frequently Asked Questions
+fb	Facebook
+FUBAR	Fouled up beyond all recognition
+fwd	Forward
+FWIW	For what it's worth
+FYI	For your information
+Gamer	Video game player
+gf	Girlfriend
+GG	Good game
+GJ	Good job
+GL	Good luck
+GLHF	Good luck have fun
+GPS	Global positioning system
+gr8	Great
+GTG	Got to go
+HBO	Home Box Office
+HOAS	Hold on a second
+HTH	Hope this helps
+hw	Homework
+IAC	In any case
+IC	I see
+IDK	I don't know
+IIRC	If I remember correctly
+IKR	I know, right?
+IMO	In my opinion
+info	Information
+IRT	In regards to
+J/K	Just kidding
+K	OK
+L8	Late
+l8r	Later
+LAN	Local Area Network
+LMAO	Laughing my ass off
+LMK	Let me know
+LOL	Laughing out loud
+m	Male
+MMB	Message me back
+MMO	Massively multiplayer online
+Mooch	Freeload
+msg	Message
+MYOB	Mind your own business
+N/A	Not Available
+NC	No comment
+ne1	Anyone
+NM	Not much
+noob	Newbie
+NP	No problem
+NTN	No thanks needed
+od	Overdose
+OMG	Oh my gosh
+OMW	On my way
+OT	Off topic
+PC	Personal computer
+perv	Pervert
+PHAT	Pretty hot and tempting
+PK	Player Kill
+pls	Please
+PM	Postmeridian
+POS	Parent over shoulder
+ppl	People
+pwn	Own
+qt	Cutie
+re	Regarding
+ROFL	Rolling on the floor laughing
+ROTFL	Rolling on the floor laughing
+RPG	Role playing game
+RSVP	Répondez s'il vous plaît
+RTFM	Read the flippin' manual
+sec	Second
+SMH	Shaking my head
+SMS	Short Message Service
+SOS	Someone over shoulder
+Sry	Sorry
+sup	What's up
+Swag	Boasting about one's skills or style
+TBA	To be announced
+TBC	To be continued
+TBD	To be determined
+TC	Take care
+thx	Thanks
+TIA	Thanks in advance
+TLC	Tender love and care
+TMI	Too much information
+Troll	Offensive comments poster
+TTFN	Ta-ta for now
+TTYL	Talk to you later
+Tweet	Twitter post
+txt	Text
+TY	Thank you
+u	You
+U2	You too
+ugh	Disgusted
+UR	Your
+VM	Voicemail
+vs	Versus
+w/	With
+w/e	Whatever
+w/o	Without
+W8	Wait
+WB	Write back
+Whoa	Expression of surprise
+WTF	What the fuck
+XOXO	Hugs and kisses
+Y	Why
+YOLO	You only live once
+YW	You're welcome
+ZZZ	Sleeping
+<3	love

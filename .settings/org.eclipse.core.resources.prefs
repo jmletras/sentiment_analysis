@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/machinelearning.py=utf-8
+encoding//src/parse_tree.py=utf-8
+encoding//src/sentence_database.py=utf-8
+encoding//src/sentiment_lexicon.py=utf-8
