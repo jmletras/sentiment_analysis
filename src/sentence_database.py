@@ -48,7 +48,7 @@ def store_sentences_db(directory):
             f = open(directory+filess)
             try:
                 lines = f.read().splitlines()[1:]
-                print f
+                print (f)
             finally:
                 f.close()
         except IOError:
@@ -67,10 +67,10 @@ def store_sentences_db(directory):
                         c.execute("INSERT INTO dataset_test (tweet_id, author, entity_id, text, polarity) VALUES (?, ?, ?, ?, ?)", (sentences))
                         i+=1
     conn.commit()
-    print str(i)+ " sentences were added to the database"
+    print (str(i)+ " sentences were added to the database")
     
 def get_data(data):
-    print "Accessing sentences from database: ", str(data+".db")
+    print ("Accessing sentences from database: ", str(data+".db"))
     sentences = []
     conn = sqlite3.connect(data+".db")
     conn.text_factory = str
@@ -100,11 +100,11 @@ if __name__ == '__main__':
     start = datetime.now()
     sentences_polarities = get_sentencespolarity()
     store_sentences_db(tweets_directory_test)
-    print "Positivas", get_dataCountByPolarity("POSITIVE")
-    print "Negativas", get_dataCountByPolarity("NEGATIVE")
-    print "Neutro", get_dataCountByPolarity("NEUTRAL")
+    print ("Positivas", get_dataCountByPolarity("POSITIVE"))
+    print ("Negativas", get_dataCountByPolarity("NEGATIVE"))
+    print ("Neutro", get_dataCountByPolarity("NEUTRAL"))
     
-    print int(get_dataCountByPolarity("POSITIVE"))+int(get_dataCountByPolarity("NEGATIVE"))+int(get_dataCountByPolarity("NEUTRAL"))
+    print (int(get_dataCountByPolarity("POSITIVE"))+int(get_dataCountByPolarity("NEGATIVE"))+int(get_dataCountByPolarity("NEUTRAL")))
     #print len(get_positive_data())
     conn.close()
     

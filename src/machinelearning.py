@@ -25,7 +25,7 @@ from sklearn.linear_model.stochastic_gradient import SGDClassifier
 #from nltk.collocations import BigramCollocationFinder
 import string, math
 from bs4 import BeautifulSoup
-import urllib.request, httplib2
+import urllib, httplib2
 import winsound
 import parse_tree
 
@@ -193,13 +193,13 @@ def get_sentencefeatures(sentence_tokens, uppercase = "", url = "", entities = "
     features["has_entities"] = 0
     
     if show_info==True:
-        print tree
-    #sentiment_words = parse_tree.getSentimentWordsFromNodes(tree)
+        print (tree)
+    #sentiment_wor)ds = parse_tree.getSentimentWordsFromNodes(tree)
     
     sentiment_words = [l.lemmatize(s.lower()) for s in sentiment_words if s not in stopwords.words("english")]
     
     if show_info==True:
-        print "Sentiment Words: ", str(sentiment_words)  
+        print ("Sentiment Words: ", str(sentiment_words)  )
     
     #From sentiment words without negation
     #features["polarity_value"] = sum(map(lambda word: polarity_list.get(word, 0), sentiment_words))
@@ -223,7 +223,7 @@ def get_sentencefeatures(sentence_tokens, uppercase = "", url = "", entities = "
     features["polarity_value"] = sum(calculate_polarity_values(sentiment_words)) #With negations account
     
     if show_info==True:
-        print "Polarity_Value: ", str(features["polarity_value"])
+        print ("Polarity_Value: ", str(features["polarity_value"]))
     
     if features["has_url"]:
         features["has_url"] = 1
@@ -331,51 +331,51 @@ def get_sentencefeatures(sentence_tokens, uppercase = "", url = "", entities = "
     ######################################################
 
     if show_info==True:
-        print "Features: \n", features
+        print ("Features: \n", features)
         
     return features
 
 def calculate_positive_word_frequency():
-    print "Calculating Positive word frequency"
+    print ("Calculating Positive word frequency")
     try:
         a = open("export/Positive Words Frequency_20131116_174131.txt")
         try:
-            pos_word_frequency = dict(map(lambda (k,v): (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
+            pos_word_frequency = dict(map(lambda k,v: (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError as e:
-        print "I/O error({0}): {1}".format(e.errno, e.strerror)
+        print ("I/O error({0}): {1}".format(e.errno, e.strerror))
         pass
     
-    print "Positive Words: ", str(len(pos_word_frequency))
+    print ("Positive Words: ", str(len(pos_word_frequency)))
     return pos_word_frequency
 
 def calculate_negative_word_frequency(): 
-    print "Calculating Negative word frequency" 
+    print ("Calculating Negative word frequency" )
     try:
         a = open("export/Negative Words Frequency_20131116_174132.txt")
         try:
-            neg_word_frequency = dict(map(lambda (k,v): (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
+            neg_word_frequency = dict(map(lambda k,v: (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError as e:
-        print "I/O error({0}): {1}".format(e.errno, e.strerror)
+        print ("I/O error({0}): {1}".format(e.errno, e.strerror))
         pass
-    print "Negative Words: ", str(len(neg_word_frequency))
+    print ("Negative Words: ", str(len(neg_word_frequency)))
     return neg_word_frequency
 
 def calculate_neutral_word_frequency():
-    print "Calculating Neutral word frequency" 
+    print ("Calculating Neutral word frequency" )
     try:
         a = open("export/Neutral Words Frequency_20131116_174132.txt")
         try:
-            neu_word_frequency = dict(map(lambda (k,v): (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
+            neu_word_frequency = dict(map(lambda k,v: (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError as e:
-        print "I/O error({0}): {1}".format(e.errno, e.strerror)
+        print ("I/O error({0}): {1}".format(e.errno, e.strerror))
         pass
-    print "Neutral Words: ", str(len(neu_word_frequency))
+    print ("Neutral Words: ", str(len(neu_word_frequency)))
     return neu_word_frequency
 
 def calculate_polarity_values(sentiment_words):
@@ -411,7 +411,7 @@ def calculate_polarity_values(sentiment_words):
     return polarity_values
 
 def get_sentence_polarity(key):
-    print key
+    print (key)
     return sentences[key][4]
 
 def get_class(value):
@@ -425,7 +425,7 @@ def get_class(value):
     
 
 def calculate_entropy():
-    print "Calculating frequency of words entropy"
+    print ("Calculating frequency of words entropy")
     
     pos_word_frequency = calculate_positive_word_frequency()
     neg_word_frequency = calculate_negative_word_frequency()
@@ -470,101 +470,101 @@ def get_featuresets():
     
     #write_list_to_file(sentence_polarity, "FeaturesSets_List_Bigram+Polarity")  
     #print "FeatureSets Saved to List"
-    print "Sentences Features Generated." 
+    print ("Sentences Features Generated.") 
     return sentence_polarity  
 
 def get_sentence_url_polarities(): 
-    print "Retrieving URL polarities from file..." 
+    print ("Retrieving URL polarities from file...") 
     try:
         a = open("export/URL_Polarities_20131109_134032.txt")
         try:
-            polarity_url_dict = dict(map(lambda (k,v): (k,int(v)), [ line.split('\t') for line in a ])) 
+            polarity_url_dict = dict(map(lambda k,v: (k,int(v)), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError:
-        print "Ocorreu um erro ao ler o ficheiro: export/URL_Polarities_20131109_134032.txt" , 
+        print ("Ocorreu um erro ao ler o ficheiro: export/URL_Polarities_20131109_134032.txt" ), 
         pass
-    print "Polarity URL list retrieved."
+    print ("Polarity URL list retrieved.")
     return polarity_url_dict
 
 def get_slang_dictionary():
-    print "Retrieving internet slang from file..." 
+    print ("Retrieving internet slang from file...") 
     try:
         a = open("data/internetslang.txt")
         try:
-            internet_slang_dict = dict(map(lambda (k,v): (l.lemmatize(k.lower()),v.rstrip()), [ line.split('\t') for line in a ])) 
+            internet_slang_dict = dict(map(lambda k,v: (l.lemmatize(k.lower()),v.rstrip()), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError:
-        print "Ocorreu um erro ao ler o ficheiro: data/internetslang.txt" , 
+        print ("Ocorreu um erro ao ler o ficheiro: data/internetslang.txt") , 
         pass
-    print "Internet Slang list retrieved."
+    print ("Internet Slang list retrieved.")
     return internet_slang_dict
 
 def save_polarity_url_to_file():
-    print "Saving polarity URL to file"
+    print ("Saving polarity URL to file")
     sentences_url_polarity = {}
     i = 0
     for line in sentences:
-        print str(i)
+        print (str(i))
         url_list = []
         url_list = re.findall(r'(https?://\S+)', line[3]) #Remove enderecos Web
         if len(url_list) > 0:
             if url_list[0] != "":
-                url = urllib2.quote(url_list[0], safe=":/")
+                url = urllib.quote(url_list[0], safe=":/")
                 try:
-                    soup = BeautifulSoup(urllib2.urlopen(url))
+                    soup = BeautifulSoup(urllib.urlopen(url))
                     if soup.title:
                         if soup.title.string:
-                            print soup.title.string
+                            print (soup.title.string)
                             url_tokens = re.findall(r"[\w']+|[#-.,!?;\"]",soup.title.string)
                             tokens = [l.lemmatize(s.lower()) for s in url_tokens if s not in stopwords.words("english") and not s.isdigit()]
                             sentences_url_polarity[line[0]] = sum(map(lambda word: polarity_list.get(word, 0), tokens))
-                except urllib2.HTTPError, e: 
+                except urllib.HTTPError as e: 
                     #print "Error:", e
                     pass
     
-                except httplib.BadStatusLine, e:
+                except httplib2.BadStatusLine as e:
                     #print "Error:", e
                     pass
-                except urllib2.URLError, e: 
+                except urllib.URLError as e: 
                     #print "Error:", e
                     pass
-                except urllib2.socket.error, e:
+                except urllib.socket.error as e:
                     #print "Error:", e
                     pass
         i += 1
     #write_dict_to_file(sentences_url_polarity, "URL_Polarities")
         
-    print "Done" 
+    print ("Done" )
     
    
 def generate_afinn_polarity_list():
-    print "Generating AFINN Polarity Word List"
+    print ("Generating AFINN Polarity Word List")
     try:
         a = open("data/AFINN/AFINN-111.txt")
         try:
-            polarity_list = dict(map(lambda (k,v): (k,int(v)), [ line.split('\t') for line in a ])) 
+            polarity_list = dict(map(lambda k,v: (k,int(v)), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError:
-        print "Ocorreu um erro ao ler o ficheiro " 
+        print ("Ocorreu um erro ao ler o ficheiro " )
         pass
-    print "Polarity List: AFINN. Words: ", str(len(polarity_list))
+    print ("Polarity List: AFINN. Words: ", str(len(polarity_list)))
     return polarity_list
 
 def generate_afinn_swn_polarity_list():
-    print "Generating AFINN Polarity Word List"
+    print ("Generating AFINN Polarity Word List")
     try:
         a = open("export/sentiment_wordlist_20131018_215835.txt")
         try:
-            polarity_list = dict(map(lambda (k,v): (k,int(v)), [ line.split(':') for line in a ])) 
+            polarity_list = dict(map(lambda k,v: (k,int(v)), [ line.split(':') for line in a ])) 
         finally:
             a.close()
     except IOError:
-        print "Ocorreu um erro ao ler o ficheiro " 
+        print ("Ocorreu um erro ao ler o ficheiro " )
         pass
-    print "Polarity List: AFINN+SentiWordNet. Words: ", str(len(polarity_list))
+    print ("Polarity List: AFINN+SentiWordNet. Words: ", str(len(polarity_list)))
     return polarity_list
     
 def save_arff_file(featuresets, name):    
@@ -586,49 +586,49 @@ def save_arff_file(featuresets, name):
     return "Arff File Generated"
 
 def generate_report_calculated_polarities(right, wrong, polarities_calculated):
-    print "----Polaridade----"
-    print "Polaridade real - Positivos: " ,polarities_calculated.count("POSITIVE"), " Negativos: " ,polarities_calculated.count("NEGATIVE"), \
-        "Neutros: " ,polarities_calculated.count("NEUTRAL")
+    print ("----Polaridade----")
+    print ("Polaridade real - Positivos: " ,polarities_calculated.count("POSITIVE"), " Negativos: " ,polarities_calculated.count("NEGATIVE"), \
+        "Neutros: " ,polarities_calculated.count("NEUTRAL"))
     
-    print "Polaridade calculada - Correctos:", right.count("POSITIVE"), right.count("NEGATIVE"), right.count("NEUTRAL")," - Errados:", \
-        wrong.count("POSITIVE"), wrong.count("NEGATIVE"), wrong.count("NEUTRAL")
+    print ("Polaridade calculada - Correctos:", right.count("POSITIVE"), right.count("NEGATIVE"), right.count("NEUTRAL")," - Errados:", \
+        wrong.count("POSITIVE"), wrong.count("NEGATIVE"), wrong.count("NEUTRAL"))
         
-    print "------------Acertos-----------------"
-    print "Correctos: ", len(right), " - Errados:", len(wrong)
-    print "Taxa de Acerto: {0:.3f}".format(len(right)/float(len(polarities_calculated)))
+    print ("------------Acertos-----------------")
+    print ("Correctos: ", len(right), " - Errados:", len(wrong))
+    print ("Taxa de Acerto: {0:.3f}".format(len(right)/float(len(polarities_calculated))))
     
-    print "------------Precisão-----------------"
-    print "Positivos: {0:.3f}".format(right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE")))
-    print "Negativos: {0:.3f}".format(right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE")))
-    print "Neutros: {0:.3f}".format(right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL")))
+    print ( "------------Precisão-----------------")
+    print ("Positivos: {0:.3f}".format(right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))))
+    print ("Negativos: {0:.3f}".format(right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))))
+    print ("Neutros: {0:.3f}".format(right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))))
 
-    print "------------Cobertura-----------------"
-    print "Positivos: {0:.3f}".format(right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE")))
-    print "Negativos: {0:.3f}".format(right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE")))
-    print "Neutros: {0:.3f}".format(right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL")))
+    print ("------------Cobertura-----------------")
+    print ("Positivos: {0:.3f}".format(right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE"))))
+    print ("Negativos: {0:.3f}".format(right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE"))))
+    print ("Neutros: {0:.3f}".format(right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL"))))
     
-    print "------------Medida-F-----------------"
-    print "Positivos: {0:.3f}".format(2*((right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))*right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE")))/  \
-                                         (right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))+right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE")))))
-    print "Negativos: {0:.3f}".format(2*((right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))*right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE")))/  \
-                                         (right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))+right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE")))))
-    print "Neutros: {0:.3f}".format(2*((right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))*right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL")))/  \
-                                         (right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))+right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL")))))            
+    print ("------------Medida-F-----------------")
+    print ("Positivos: {0:.3f}".format(2*((right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))*right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE")))/  \
+                                         (right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))+right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE"))))))
+    print ("Negativos: {0:.3f}".format(2*((right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))*right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE")))/  \
+                                         (right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))+right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE"))))))
+    print ("Neutros: {0:.3f}".format(2*((right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))*right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL")))/  \
+                                         (right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))+right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL"))))) )           
 
 def entity_afection(sentence, entitylist):
     sentiment_words = []
     sentiment_dictionary = parse_tree.get_dictionary_sentiment(parse_tree.sentiment_assigning(sentence[5], sentence[3], sentence[4]))
         
-    print "Entidades reais (Anotadas):", str(entity_detection[entitylist])
+    print ("Entidades reais (Anotadas):", str(entity_detection[entitylist]))
         
     if len(sentence[3]) > 0:
-        print "Entidades detectadas pelo sistema: ", sentence[3]
-        print "Entidades e sentimentos atribuidos:"
+        print ("Entidades detectadas pelo sistema: ", sentence[3])
+        print ("Entidades e sentimentos atribuidos:")
         entity_detected = ""
         sentiment_index = 0
         for x in range(0, len(sentence[3])):
             sentiment_words = [l.lemmatize(word.lower()) for word in sentiment_dictionary[x+1]]
-            print sentence[3][x], " - ", sentiment_words, " - Valor pol.:", sum(calculate_polarity_values(sentiment_words))
+            print (sentence[3][x], " - ", sentiment_words, " - Valor pol.:", sum(calculate_polarity_values(sentiment_words)))
                 
                 
             for word in sentence[3][x].split():
@@ -639,22 +639,22 @@ def entity_afection(sentence, entitylist):
                         
                     #print "Sentimento: ", sum(calculate_polarity_values(sentiment_words))
         if entity_detected:
-            print "Entidade considerada igual:", entity_detected
+            print ("Entidade considerada igual:", entity_detected)
         if sentiment_index != 0:
             sentiment_words = [l.lemmatize(word.lower()) for word in sentiment_dictionary[sentiment_index]]
-            print "Palavras sentimento atribuidas a entidade real:", sentiment_words, " - Valor pol.:", sum(calculate_polarity_values(sentiment_words))
+            print ("Palavras sentimento atribuidas a entidade real:", sentiment_words, " - Valor pol.:", sum(calculate_polarity_values(sentiment_words)))
         else:
             sentiment_words = sentence[4]
-            print "Palavras sentimento atribuidas:", sentence[4], " - Valor pol.:", sum(calculate_polarity_values(sentence[4]))
+            print ("Palavras sentimento atribuidas:", sentence[4], " - Valor pol.:", sum(calculate_polarity_values(sentence[4])))
             
     else:
-        print "Nao foi encontrada qualquer referencia a uma entidade."
+        print ("Nao foi encontrada qualquer referencia a uma entidade.")
         sentiment_words = sentence[4]
-        print "Palavras sentimento atribuidas pelo sistema:", sentence[4], " - Valor pol.:", sum(calculate_polarity_values(sentence[4]))
+        print ("Palavras sentimento atribuidas pelo sistema:", sentence[4], " - Valor pol.:", sum(calculate_polarity_values(sentence[4])))
     return sentiment_words
 
 def calculate_processing_time():
-    print "Generating sentences to calculate the processing time..." 
+    print ("Generating sentences to calculate the processing time...") 
     sentences_list = []
     try:
         a = open("data/50_sentences.txt")
@@ -663,17 +663,17 @@ def calculate_processing_time():
         finally:
             a.close()
     except IOError:
-        print "Ocorreu um erro ao ler o ficheiro" , 
+        print ("Ocorreu um erro ao ler o ficheiro") , 
         pass
-    print "Foram lidas ", str(len(sentences_list)), "mensagens."
+    print ("Foram lidas ", str(len(sentences_list)), "mensagens.")
     
     time_start = datetime.now()
     for sentence in sentences_list:
-        print "\nFrase:", sentence
+        print ("\nFrase:", sentence)
         sentence = process_single_sentence(sentence, True)
 
-        print "Entidades, sentimentos e pontuacao:"
-        print parse_tree.sentiment_assigning(sentence[5], sentence[3], sentence[4])        
+        print ("Entidades, sentimentos e pontuacao:")
+        print (parse_tree.sentiment_assigning(sentence[5], sentence[3], sentence[4]))        
         
         sentiment_dictionary = parse_tree.get_dictionary_sentiment(parse_tree.sentiment_assigning(sentence[5], sentence[3], sentence[4]))
         
@@ -681,23 +681,23 @@ def calculate_processing_time():
         if len(sentence[3]) > 0:
             
             if len(sentence[3]) == 1:
-                print "Uma entidade encontrada"    
+                print ("Uma entidade encontrada")    
             else:
-                print "Varias entidades encontradas"
+                print ("Varias entidades encontradas")
             for x in range(0, len(sentence[3])):
                 sentiment_words = [l.lemmatize(word.lower()) for word in sentiment_dictionary[x+1]]
-                print sentence[3][x], " - ", sentiment_words, sum(calculate_polarity_values(sentiment_words))
+                print (sentence[3][x], " - ", sentiment_words, sum(calculate_polarity_values(sentiment_words)))
         else:
-            print "Nao foi encontrada qualquer referencia a uma entidade."
+            print ("Nao foi encontrada qualquer referencia a uma entidade.")
         #print parse_tree.getTreeNodes(sentence[5])
             #print classifier.classify(get_sentencefeatures(sentence[0], sentence[1], sentence[2], sentence[3], sentence[4], sentence[5], show_info=True))
     
-    print "Tempo total para ", str(len(sentences_list)), "mensagens:", str(datetime.now() - time_start)
-    print "Tempo medio: ", str((datetime.now() - time_start)/len(sentences_list))
+    print ("Tempo total para ", str(len(sentences_list)), "mensagens:", str(datetime.now() - time_start))
+    print ("Tempo medio: ", str((datetime.now() - time_start)/len(sentences_list)))
 
 
 def calculate_rules_processing():
-    print "Getting the entities list.."
+    print ("Getting the entities list..")
     
     entity_detection = {}
     try:
@@ -718,9 +718,9 @@ def calculate_rules_processing():
     except IOError:
             pass
     
-    print entity_detection
+    print (entity_detection)
     
-    print "Calculating Rules based sentiment"
+    print ("Calculating Rules based sentiment")
     
     #Comparar polaridades
     #equal = 0
@@ -729,7 +729,7 @@ def calculate_rules_processing():
     polarities_calculated = []
     
     for sentence_list in sentences:
-        print "\nFrase:", sentence_list
+        print ("\nFrase:", sentence_list)
         sentence = process_single_sentence(sentence_list[3], False)
         
         #tokens, uppercase, url, entities, sentiment_words, tree
@@ -738,16 +738,16 @@ def calculate_rules_processing():
         sentiment_dictionary = parse_tree.get_dictionary_sentiment(parse_tree.sentiment_assigning(sentence[5], sentence[3], sentence[4]))
         
         
-        print "Entidades reais (Anotadas):", str(entity_detection[sentence_list[2]])
+        print ("Entidades reais (Anotadas):", str(entity_detection[sentence_list[2]]))
         
         if len(sentence[3]) > 0:
-            print "Entidades detectadas pelo sistema: ", sentence[3]
-            print "Entidades e sentimentos atribuidos:"
+            print ("Entidades detectadas pelo sistema: ", sentence[3])
+            print ("Entidades e sentimentos atribuidos:")
             entity_detected = ""
             sentiment_index = 0
             for x in range(0, len(sentence[3])):
                 sentiment_words = [l.lemmatize(word.lower()) for word in sentiment_dictionary[x+1]]
-                print sentence[3][x], " - ", sentiment_words, " - Valor pol.:", sum(calculate_polarity_values(sentiment_words))
+                print (sentence[3][x], " - ", sentiment_words, " - Valor pol.:", sum(calculate_polarity_values(sentiment_words)))
                 
                 
                 for word in sentence[3][x].split():
@@ -758,27 +758,27 @@ def calculate_rules_processing():
                         
                         #print "Sentimento: ", sum(calculate_polarity_values(sentiment_words))
             if entity_detected:
-                print "Entidade considerada igual:", entity_detected
+                print ("Entidade considerada igual:", entity_detected)
             if sentiment_index != 0:
                 sentiment_words = [l.lemmatize(word.lower()) for word in sentiment_dictionary[sentiment_index]]
-                print "Palavras sentimento atribuidas a entidade real:", sentiment_words, " - Valor pol.:", sum(calculate_polarity_values(sentiment_words))
+                print ("Palavras sentimento atribuidas a entidade real:", sentiment_words, " - Valor pol.:", sum(calculate_polarity_values(sentiment_words)))
             else:
                 sentiment_words = sentence[4]
-                print "Palavras sentimento atribuidas:", sentence[4], " - Valor pol.:", sum(calculate_polarity_values(sentence[4]))
+                print ("Palavras sentimento atribuidas:", sentence[4], " - Valor pol.:", sum(calculate_polarity_values(sentence[4])))
             
         else:
-            print "Nao foi encontrada qualquer referencia a uma entidade."
+            print ("Nao foi encontrada qualquer referencia a uma entidade.")
             sentiment_words = sentence[4]
-            print "Palavras sentimento atribuidas pelo sistema:", sentence[4], " - Valor pol.:", sum(calculate_polarity_values(sentence[4]))
+            print ("Palavras sentimento atribuidas pelo sistema:", sentence[4], " - Valor pol.:", sum(calculate_polarity_values(sentence[4])))
         
-        print "Classe calculada: ", get_class(sum(calculate_polarity_values(sentiment_words))), " Classe real:" ,sentence_list[4]
+        print ("Classe calculada: ", get_class(sum(calculate_polarity_values(sentiment_words))), " Classe real:" ,sentence_list[4])
         
         if get_class(sum(calculate_polarity_values(sentiment_words))) == sentence_list[4]:
-            print "Certo"
+            print ("Certo")
             right.append(get_class(sum(calculate_polarity_values(sentiment_words))))
             polarities_calculated.append(sentence_list[4])
         else:
-            print "Errado"
+            print ("Errado")
             wrong.append(get_class(sum(calculate_polarity_values(sentiment_words))))
             polarities_calculated.append(sentence_list[4])
     generate_report_calculated_polarities(right, wrong, polarities_calculated)
@@ -835,18 +835,18 @@ if __name__ == '__main__':
     try:
         a = open("export/entropy_half_training.txt")
         try:
-            entropy = dict(map(lambda (k,v): (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
+            entropy = dict(map(lambda k,v: (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError as e:
-        print "I/O error({0}): {1}".format(e.errno, e.strerror)
+        print ("I/O error({0}): {1}".format(e.errno, e.strerror))
         pass
     
     pos_word_frequency = calculate_positive_word_frequency()
     neg_word_frequency = calculate_negative_word_frequency()
     neu_word_frequency = calculate_neutral_word_frequency()
     
-    print "Getting the entities list.."
+    print ("Getting the entities list..")
     
     entity_detection = {}
     try:
@@ -867,42 +867,42 @@ if __name__ == '__main__':
     except IOError:
             pass
     
-    print entity_detection
+    print (entity_detection)
     
     
     tokenized_sentences = {}
     sentences = sentence_database.get_data("dataset")    
     shuffle(sentences)
-    print "Existem " + str(len(sentences)) + " mensagens na BD para treino."
+    print ("Existem " + str(len(sentences)) + " mensagens na BD para treino.")
     
     process_database_sentences() 
     
-    print "Generating Feature Sets.... for training" 
+    print ("Generating Feature Sets.... for training" )
     featuresets = get_featuresets()
     
-    print "Generating training and test set"
+    print ("Generating training and test set")
     #train_set, test_set = featuresets[11000:], featuresets[:11000]
     train_set = featuresets
     
-    print "Teste"
+    print ("Teste")
     
     sentences = sentence_database.get_data("dataset_test")    
     shuffle(sentences)
-    print "Existem " + str(len(sentences)) + " mensagens na BD para teste."
+    print ("Existem " + str(len(sentences)) + " mensagens na BD para teste.")
     
     tokenized_sentences = {}
     process_database_sentences() 
     
-    print "Generating Feature Sets.... for training" 
+    print ("Generating Feature Sets.... for training" )
     featuresets = get_featuresets()
     
-    print "Generating training and test set"
+    print ("Generating training and test set")
     #train_set, test_set = featuresets[11000:], featuresets[:11000]
     test_set = featuresets
-    print "train_set", len(train_set)
-    print "test_set", len(test_set)
+    print ("train_set", len(train_set))
+    print ("test_set", len(test_set))
     
-    print "Classifying..."
+    print ("Classifying...")
     classifier = nltk.NaiveBayesClassifier.train(train_set)
     #classifier = nltk.DecisionTreeClassifier.train(train_set)
     #classifier = SklearnClassifier(LinearSVC()).train(train_set)
@@ -917,17 +917,17 @@ if __name__ == '__main__':
             testsets[observed].add(i)
               
     #print "Quantidade de features: " + str(featuresize)
-    print 'accuracy:', nltk.classify.util.accuracy(classifier, test_set)
-    print 'pos precision:', nltk.metrics.precision(refsets['POSITIVE'], testsets['POSITIVE'])
-    print 'pos recall:', nltk.metrics.recall(refsets['POSITIVE'], testsets['POSITIVE'])
-    print 'neg precision:', nltk.metrics.precision(refsets['NEGATIVE'], testsets['NEGATIVE'])
-    print 'neg recall:', nltk.metrics.recall(refsets['NEGATIVE'], testsets['NEGATIVE'])
-    print 'neu precision:', nltk.metrics.precision(refsets['NEUTRAL'], testsets['NEUTRAL'])
-    print 'neu recall:', nltk.metrics.recall(refsets['NEUTRAL'], testsets['NEUTRAL'])
+    print ('accuracy:', nltk.classify.util.accuracy(classifier, test_set))
+    print ('pos precision:', nltk.metrics.precision(refsets['POSITIVE'], testsets['POSITIVE']))
+    print ('pos recall:', nltk.metrics.recall(refsets['POSITIVE'], testsets['POSITIVE']))
+    print ('neg precision:', nltk.metrics.precision(refsets['NEGATIVE'], testsets['NEGATIVE']))
+    print ('neg recall:', nltk.metrics.recall(refsets['NEGATIVE'], testsets['NEGATIVE']))
+    print ('neu precision:', nltk.metrics.precision(refsets['NEUTRAL'], testsets['NEUTRAL']))
+    print ('neu recall:', nltk.metrics.recall(refsets['NEUTRAL'], testsets['NEUTRAL']))
     
     #classifier.show_most_informative_features(100)
     
-    print "Generating ARFF file..."
+    print ("Generating ARFF file...")
     save_arff_file(featuresets, "25_features_VB-ADJ-ADV_Sentiment_Preparacao_Teste")
    
     
@@ -935,7 +935,7 @@ if __name__ == '__main__':
     #calculate_processing_time()
     #calculate_rules_processing()
     
-    print datetime.now() - start
+    print (datetime.now() - start)
     winsound.PlaySound('beep-7.wav', winsound.SND_FILENAME)
     #===========================================================================
     # while True:
