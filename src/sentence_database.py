@@ -2,7 +2,7 @@
 '''
 Created on 10/10/2013
 
-@author: boss
+@author: jmletras
 '''
 import os, sqlite3
 from datetime import datetime
@@ -72,7 +72,7 @@ def store_sentences_db(directory):
 def get_data(data):
     print ("Accessing sentences from database: ", str(data+".db"))
     sentences = []
-    conn = sqlite3.connect(data+".db")
+    conn = sqlite3.connect("src/"+data+".db")
     conn.text_factory = str
     c = conn.cursor()
     c.execute("SELECT * FROM "+ data)   
@@ -82,20 +82,20 @@ def get_data(data):
     return sentences
 
 def get_dataCountByPolarity(polarity):
-    conn = sqlite3.connect('dataset_train.db')
+    conn = sqlite3.connect('src/dataset_train.db')
     conn.text_factory = str
     ci = conn.cursor()
     ci.execute('SELECT COUNT(*) FROM dataset where polarity LIKE "'+polarity+'"')    
     return ci.fetchone()[0]
         
 if __name__ == '__main__':
-    conn = sqlite3.connect('dataset_test.db')
+    conn = sqlite3.connect('src/dataset_test.db')
     conn.text_factory = str
     c = conn.cursor()
     
-    tweets_directory_training = "data/dataset/training/"
-    tweets_directory_test = "data/dataset/test/"
-    polarity_file = "data/dataset/test_goldstandard_polarity.dat"
+    tweets_directory_training = "src/data/dataset/training/"
+    tweets_directory_test = "src/data/dataset/test/"
+    polarity_file = "src/data/dataset/test_goldstandard_polarity.dat"
     
     start = datetime.now()
     sentences_polarities = get_sentencespolarity()

@@ -2,7 +2,7 @@
 '''
 Created on 13/10/2013
 
-@author: boss
+@author: jmletras
 '''
 
 import sentence_database, sentiment_lexicon, re
@@ -12,16 +12,15 @@ from datetime import datetime
 from collections import defaultdict
 from nltk.stem.wordnet import WordNetLemmatizer
 
-from sets import Set
+#from sets import Set
 from nltk.corpus import stopwords
 from nltk.chunk import ne_chunk
 from nltk.tag import pos_tag
-from sentiment_lexicon import create_sentimentwordlist, write_dict_to_file,\
-    write_list_to_file
+from sentiment_lexicon import create_sentimentwordlist, write_dict_to_file, write_list_to_file
 from random import shuffle
 from nltk.classify.scikitlearn import SklearnClassifier
 from sklearn.svm import LinearSVC
-from sklearn.linear_model.stochastic_gradient import SGDClassifier
+from sklearn.linear_model import SGDClassifier
 #from nltk.collocations import BigramCollocationFinder
 import string, math
 from bs4 import BeautifulSoup
@@ -42,7 +41,6 @@ def process_database_sentences():
     #negative_sentences = 0
     
     for line in sentences:
-        print ('\n' + line)
         sentence = line[3]
         sentence_class = line[4]
         
@@ -57,7 +55,7 @@ def process_database_sentences():
         #sentiment_words = sentence_features[4]
         tree = sentence_features[5]
         
-        print ("Teste de palavras sentimento " + sentiment_words)
+        #print ("Teste de palavras sentimento " + sentiment_words)
         
         if len(tokenized_sentence) >0:
             tokenized_sentences[line[0]] = tokenized_sentence,  sentence_class, uppercase_words, url, entities, sentiment_words, tree   
@@ -338,9 +336,9 @@ def get_sentencefeatures(sentence_tokens, uppercase = "", url = "", entities = "
 def calculate_positive_word_frequency():
     print ("Calculating Positive word frequency")
     try:
-        a = open("export/Positive Words Frequency_20131116_174131.txt")
+        a = open("src/export/Positive Words Frequency_20131116_174131.txt")
         try:
-            pos_word_frequency = dict(map(lambda k,v: (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
+            pos_word_frequency = dict(map(lambda k_v: (k_v[0],float(k_v[1].rstrip())), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError as e:
@@ -353,9 +351,9 @@ def calculate_positive_word_frequency():
 def calculate_negative_word_frequency(): 
     print ("Calculating Negative word frequency" )
     try:
-        a = open("export/Negative Words Frequency_20131116_174132.txt")
+        a = open("src/export/Negative Words Frequency_20131116_174132.txt")
         try:
-            neg_word_frequency = dict(map(lambda k,v: (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
+            neg_word_frequency = dict(map(lambda k_v: (k_v[0],float(k_v[1].rstrip())), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError as e:
@@ -367,9 +365,9 @@ def calculate_negative_word_frequency():
 def calculate_neutral_word_frequency():
     print ("Calculating Neutral word frequency" )
     try:
-        a = open("export/Neutral Words Frequency_20131116_174132.txt")
+        a = open("src/export/Neutral Words Frequency_20131116_174132.txt")
         try:
-            neu_word_frequency = dict(map(lambda k,v: (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
+            neu_word_frequency = dict(map(lambda k_v: (k_v[0],float(k_v[1].rstrip())), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError as e:
@@ -455,7 +453,7 @@ def get_featuresets():
     
     sentence_polarity = []
     #i = 1
-    for key, value in tokenized_sentences.iteritems():
+    for key, value in tokenized_sentences.items():
         tokens = value[0]
         sentence_class = value[1]
         uppercase = value[2]
@@ -478,7 +476,7 @@ def get_sentence_url_polarities():
     try:
         a = open("export/URL_Polarities_20131109_134032.txt")
         try:
-            polarity_url_dict = dict(map(lambda k,v: (k,int(v)), [ line.split('\t') for line in a ])) 
+            polarity_url_dict = dict(map(lambda k_v: (k_v[0],int(k_v[1])), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError:
@@ -490,9 +488,9 @@ def get_sentence_url_polarities():
 def get_slang_dictionary():
     print ("Retrieving internet slang from file...") 
     try:
-        a = open("data/internetslang.txt")
+        a = open("src/data/internetslang.txt")
         try:
-            internet_slang_dict = dict(map(lambda k,v: (l.lemmatize(k.lower()),v.rstrip()), [ line.split('\t') for line in a ])) 
+            internet_slang_dict = dict(map(lambda k_v: (l.lemmatize(k_v[0].lower()),k_v[1].rstrip()), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError:
@@ -542,9 +540,9 @@ def save_polarity_url_to_file():
 def generate_afinn_polarity_list():
     print ("Generating AFINN Polarity Word List")
     try:
-        a = open("data/AFINN/AFINN-111.txt")
+        a = open("src/data/AFINN/AFINN-111.txt")
         try:
-            polarity_list = dict(map(lambda k,v: (k,int(v)), [ line.split('\t') for line in a ])) 
+            polarity_list = dict(map(lambda k_v: (k_v[0], int(k_v[1])), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError:
@@ -556,9 +554,9 @@ def generate_afinn_polarity_list():
 def generate_afinn_swn_polarity_list():
     print ("Generating AFINN Polarity Word List")
     try:
-        a = open("export/sentiment_wordlist_20131018_215835.txt")
+        a = open("src/export/sentiment_wordlist_20131018_215835.txt")
         try:
-            polarity_list = dict(map(lambda k,v: (k,int(v)), [ line.split(':') for line in a ])) 
+            polarity_list = dict(map(lambda k_v: (k_v[0], int(k_v[1])), [ line.split(':') for line in a ])) 
         finally:
             a.close()
     except IOError:
@@ -579,7 +577,7 @@ def save_arff_file(featuresets, name):
     f.write("@ATTRIBUTE class {\"POSITIVE\", \"NEGATIVE\", \"NEUTRAL\"}\n\n")
     f.write("@DATA\n")
     for k in featuresets:
-        string = ', '.join(str(value) for value in k[0].itervalues())
+        string = ', '.join(str(value) for value in k[0].values())
         string += ", " + str(k[1])+"\n"
         f.write(string)
     f.close()          
@@ -789,7 +787,7 @@ if __name__ == '__main__':
     
     #all_words = nltk.FreqDist()
     
-    all_words = Set([])
+    all_words = {}
     entropy = {}
     #bigram_entropy = {}
     #pos_word_frequency = nltk.FreqDist()
@@ -833,9 +831,9 @@ if __name__ == '__main__':
     #########################################
     
     try:
-        a = open("export/entropy_half_training.txt")
+        a = open("src/export/entropy_half_training.txt")
         try:
-            entropy = dict(map(lambda k,v: (k,float(v.rstrip())), [ line.split('\t') for line in a ])) 
+            entropy = dict(map(lambda k_v: (k_v[0],float(k_v[1].rstrip())), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError as e:
@@ -850,7 +848,7 @@ if __name__ == '__main__':
     
     entity_detection = {}
     try:
-        f = open("data/dataset/replab2013_entities.tsv")
+        f = open("src/data/dataset/replab2013_entities.tsv")
         
         try:
             lines = f.read().splitlines()

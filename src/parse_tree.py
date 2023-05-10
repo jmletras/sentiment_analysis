@@ -2,7 +2,7 @@
 '''
 Created on 30 de Mai de 2013
 
-@author: boss
+@author: jmletras
 '''
 import nltk, re
 
@@ -80,7 +80,7 @@ def store_sentences_db(c, directory):
             f = open(directory+filess)
             try:
                 lines = f.read().splitlines()[1:]
-                print f
+                print (f)
             finally:
                 f.close()
         except IOError:
@@ -105,9 +105,9 @@ def store_sentences_db(c, directory):
                         sentences.append("")
                     c.execute("INSERT INTO full_dataset (tweet_id, author, entity_id, text, polarity, filtering) VALUES (?, ?, ?, ?, ?, ?)", (sentences))
                     i+=1
-                    print sentences
+                    print (sentences)
     
-    print str(i)+ " sentences were added to the database"
+    print (str(i)+ " sentences were added to the database")
 
 def create_filtering_dataset():
     conn = sqlite3.connect('full_dataset.db')
@@ -148,7 +148,7 @@ def sentence_polarity(sentence_tokens):
         if str(word) in negations:
             number_negations += 1
             #features["has_negation"] = 1
-            print "negation"
+            print ("negation")
             
                 
         else:
@@ -377,7 +377,7 @@ def get_dictionary_sentiment(list):
     
 def get_data():
     sentences = []
-    conn = sqlite3.connect('full_dataset.db')
+    conn = sqlite3.connect('src/full_dataset.db')
     conn.text_factory = str
     c = conn.cursor()
     c.execute("SELECT * FROM full_dataset")   
@@ -434,7 +434,7 @@ def calculate_filtering():
     filtering_list = {}
     for line in sentences:
         sentence = line[3]
-        print sentence
+        print (sentence)
         url = re.findall(r'(https?://\S+)', sentence)
         if len(url) > 0:
             url = url[0]
@@ -444,16 +444,16 @@ def calculate_filtering():
         
         if len(entities) > 0:
             filtering_list[line[0]] = "RELATED"
-            print entities
-            print "Encontrado"
+            print (entities)
+            print ("Encontrado")
         else:
             filtering_list[line[0]] = "UNRELATED"
-            print "Nao encontrado" 
+            print ("Nao encontrado") 
     return filtering_list
         
 def compare_filtering(calculated_filtering):
     
-    print "Comparing filtering..."
+    print ("Comparing filtering...")
     true_filtering = {}
     equal = 0
     different = 0
@@ -488,35 +488,35 @@ def compare_filtering(calculated_filtering):
                 wrong.append(v)
                 filtering_calculated.append(true_filtering[k])
             
-    print "----Filtragem----"
-    print "Filtragem real - Relacionados: " ,filtering_calculated.count("RELATED"), " N Relacionados: " ,filtering_calculated.count("UNRELATED")
+    print ("----Filtragem----")
+    print ("Filtragem real - Relacionados: " ,filtering_calculated.count("RELATED"), " N Relacionados: " ,filtering_calculated.count("UNRELATED"))
     
-    print "Filtragem calculada - Correctos:", right.count("RELATED"), right.count("UNRELATED")," - Errados:", \
-        wrong.count("RELATED"), wrong.count("UNRELATED")
+    print ("Filtragem calculada - Correctos:", right.count("RELATED"), right.count("UNRELATED")," - Errados:", \
+        wrong.count("RELATED"), wrong.count("UNRELATED"))
         
-    print "------------Acertos-----------------"
-    print "Correctos: ", equal, " - Errados:", different
-    print "Taxa de Acerto: {0:.3f}".format(equal/float(len(calculated_filtering)))
+    print ("------------Acertos-----------------")
+    print ("Correctos: ", equal, " - Errados:", different)
+    print ("Taxa de Acerto: {0:.3f}".format(equal/float(len(calculated_filtering))))
     
-    print "------------Precisão-----------------"
-    print "Relacionados: {0:.3f}".format(right.count("RELATED")/float(right.count("RELATED")+wrong.count("RELATED")))
-    print "N Relacionados: {0:.3f}".format(right.count("UNRELATED")/float(right.count("UNRELATED")+wrong.count("UNRELATED")))
+    print ("------------Precisão-----------------")
+    print ("Relacionados: {0:.3f}".format(right.count("RELATED")/float(right.count("RELATED")+wrong.count("RELATED"))))
+    print ("N Relacionados: {0:.3f}".format(right.count("UNRELATED")/float(right.count("UNRELATED")+wrong.count("UNRELATED"))))
 
-    print "------------Cobertura-----------------"
-    print "Relacionados: {0:.3f}".format(right.count("RELATED")/float(filtering_calculated.count("RELATED")))
-    print "N Relacionados: {0:.3f}".format(right.count("UNRELATED")/float(filtering_calculated.count("UNRELATED")))
+    print ("------------Cobertura-----------------")
+    print ("Relacionados: {0:.3f}".format(right.count("RELATED")/float(filtering_calculated.count("RELATED"))))
+    print ("N Relacionados: {0:.3f}".format(right.count("UNRELATED")/float(filtering_calculated.count("UNRELATED"))))
     
-    print "------------Medida-F-----------------"
-    print "Relacionados: {0:.3f}".format(2*((right.count("RELATED")/float(right.count("RELATED")+wrong.count("RELATED"))*right.count("RELATED")/float(filtering_calculated.count("RELATED")))/  \
-                                         (right.count("RELATED")/float(right.count("RELATED")+wrong.count("RELATED"))+right.count("RELATED")/float(filtering_calculated.count("RELATED")))))
-    print "N Relacionados: {0:.3f}".format(2*((right.count("UNRELATED")/float(right.count("UNRELATED")+wrong.count("UNRELATED"))*right.count("UNRELATED")/float(filtering_calculated.count("UNRELATED")))/  \
-                                         (right.count("UNRELATED")/float(right.count("UNRELATED")+wrong.count("UNRELATED"))+right.count("UNRELATED")/float(filtering_calculated.count("UNRELATED")))))
+    print ("------------Medida-F-----------------")
+    print ("Relacionados: {0:.3f}".format(2*((right.count("RELATED")/float(right.count("RELATED")+wrong.count("RELATED"))*right.count("RELATED")/float(filtering_calculated.count("RELATED")))/  \
+                                         (right.count("RELATED")/float(right.count("RELATED")+wrong.count("RELATED"))+right.count("RELATED")/float(filtering_calculated.count("RELATED"))))))
+    print ("N Relacionados: {0:.3f}".format(2*((right.count("UNRELATED")/float(right.count("UNRELATED")+wrong.count("UNRELATED"))*right.count("UNRELATED")/float(filtering_calculated.count("UNRELATED")))/  \
+                                         (right.count("UNRELATED")/float(right.count("UNRELATED")+wrong.count("UNRELATED"))+right.count("UNRELATED")/float(filtering_calculated.count("UNRELATED"))))))
 
 
 l = WordNetLemmatizer() 
 #filtering_tweets_directory = "data/dataset/training/"
-polarity_file = "data/dataset/goldstandard_polarity.dat"
-filtering_file = "data/dataset/goldstandard_filtering.dat"
+polarity_file = "src/data/dataset/goldstandard_polarity.dat"
+filtering_file = "src/data/dataset/goldstandard_filtering.dat"
 #sentences_polarities = get_sentencespolarity(polarity_file)
 #sentences_filtering = get_sentencesfiltering(filtering_file)
 sentences = get_data()

@@ -2,7 +2,7 @@
 '''
 Created on 30 de Mai de 2013
 
-@author: boss
+@author: jmletras
 '''
 
 import re, os, sqlite3, time, operator
@@ -19,24 +19,24 @@ from numpy.core.defchararray import splitlines
 from datetime import datetime
 from collections import defaultdict
 
-sentiWord_file = "data/SentiWordNet_3.0.0_20130122.txt"
-affin_file = "data/AFINN/AFINN-111.txt"    
-polarity_file = "data/dataset/goldstandard_polarity.dat"
+sentiWord_file = "src/data/SentiWordNet_3.0.0_20130122.txt"
+affin_file = "src/data/AFINN/AFINN-111.txt"    
+polarity_file = "src/data/dataset/goldstandard_polarity.dat"
 
 def create_sentimentwordlist():
-    print "Generating and joining Sentiment WordList.."
+    print ("Generating and joining Sentiment WordList..")
     sentiment_wordlist = {}
     
     try:
         a = open(affin_file)
         try:
-            sentiment_wordlist = dict(map(lambda (k,v): (k,int(v)), [ line.split('\t') for line in a ])) 
+            sentiment_wordlist = dict(map(lambda k,v: (k,int(v)), [ line.split('\t') for line in a ])) 
         finally:
             a.close()
     except IOError:
         pass
     
-    print "AFIIN Words: " + str(len(sentiment_wordlist))
+    print ("AFIIN Words: " + str(len(sentiment_wordlist)))
     
     try:
         sw = open(sentiWord_file)
@@ -92,29 +92,29 @@ def create_sentimentwordlist():
                 for word in words:
                     if word not in sentiment_wordlist:
                         sentiment_wordlist[word] = polarity
-    print "Sentiment Total Words: " + str(len(sentiment_wordlist))
+    print ("Sentiment Total Words: " + str(len(sentiment_wordlist)))
     return sentiment_wordlist
     
 def write_list_to_file(list, file):
-    f = open("export/"+file+".txt", "w")
+    f = open("src/export/"+file+".txt", "w")
     for element in list:
         f.write(str(element)+"\n")
     f.close()
     
 def write_dict_to_file(dict, file):
     actual = datetime.now().strftime("%Y%m%d_%H%M%S")
-    f = open("export/"+file+"_"+actual +".txt", "w")
+    f = open("src/export/"+file+"_"+actual +".txt", "w")
     for k, v in dict.iteritems():
         f.write(str(k)+"\t"+str(v)+"\n")
     f.close()
     
 def extract_entity_names():
-    print "Extracting entity names..."
+    print ("Extracting entity names...")
     entities = []
     for line in sentences:
         chunks = ne_chunk(pos_tag(word_tokenize(line[3])))
         entities.extend([chunk[0][0] for chunk in chunks if hasattr(chunk, 'node')])
-    print "Done: Entity names extracted."
+    print ("Done: Entity names extracted.")
     write_list_to_file(set(entities), "generated_entities")
     return set(entities)
 
@@ -134,7 +134,7 @@ def add_final_dot(s):
     return s
 
 def get_sentence_filtering(entities_list):
-    print "Filtering sentences..."
+    print ("Filtering sentences...")
     
     sentence_filtering = {}
 
@@ -144,7 +144,7 @@ def get_sentence_filtering(entities_list):
             sentence_filtering[line[0]] = "RELATED"
         else:
             sentence_filtering[line[0]] = "UNRELATED"
-    print "Done: Filtering."    
+    print ("Done: Filtering.")    
     return sentence_filtering
 
               
@@ -170,11 +170,11 @@ def get_sentence_polarity_swn():
             tweet_polarity[line[0]] = "NEGATIVE"
         else:
             tweet_polarity[line[0]] = "NEUTRAL"
-    return tweet_polarity
+    return (tweet_polarity)
 
 def get_sentence_polarity_affin(): 
     l = WordNetLemmatizer() 
-    afinn = dict(map(lambda (k,v): (k,int(v)), [ line.split('\t') for line in open(affin_file) ]))
+    afinn = dict(map(lambda k,v: (k,int(v)), [ line.split('\t') for line in open(affin_file) ]))
     tweet_polarity={}
     for line in sentences:
         tokens = word_tokenize(line[3])
@@ -192,12 +192,12 @@ def get_sentence_polarity_affin_sw():
     l = WordNetLemmatizer() 
     sentiment_wordlist = create_sentimentwordlist()
     
-    print "Total polarities AFINN+SWN: ", len(sentiment_wordlist)
+    print ("Total polarities AFINN+SWN: ", len(sentiment_wordlist))
     tweet_polarity={}    
     
     #f = open("export/generated_polarity_values.txt", "w")
     
-    print "Generating sentence polarities..."
+    print ("Generating sentence polarities...")
     for line in sentences:
         sentence = line[3]
 
@@ -312,7 +312,7 @@ def get_sentence_polarity_affin_sw():
     
     #f.close()
     
-    print "Done: Sentence polarities."
+    print ("Done: Sentence polarities.")
     #Juntar AFINN ao SentiWordNet mantendo as caracteristicas de polaridade do SWN              
     #===========================================================================
     # print "Adicionando polaridade de AFINN"
@@ -398,7 +398,7 @@ def get_sentence_polarity_affin_sw():
 #===============================================================================
 def compare_polarities():
     
-    print "Comparing polarities..."
+    print ("Comparing polarities...")
     true_polarity = {}
     equal = 0
     different = 0
@@ -433,40 +433,40 @@ def compare_polarities():
                 wrong.append(v)
                 polarities_calculated.append(true_polarity[k])
             
-    print "----Polaridade----"
-    print "Polaridade real - Positivos: " ,polarities_calculated.count("POSITIVE"), " Negativos: " ,polarities_calculated.count("NEGATIVE"), \
-        "Neutros: " ,polarities_calculated.count("NEUTRAL")
+    print ("----Polaridade----")
+    print ("Polaridade real - Positivos: " ,polarities_calculated.count("POSITIVE"), " Negativos: " ,polarities_calculated.count("NEGATIVE"), \
+        "Neutros: " ,polarities_calculated.count("NEUTRAL"))
     
-    print "Polaridade calculada - Correctos:", right.count("POSITIVE"), right.count("NEGATIVE"), right.count("NEUTRAL")," - Errados:", \
-        wrong.count("POSITIVE"), wrong.count("NEGATIVE"), wrong.count("NEUTRAL")
+    print ("Polaridade calculada - Correctos:", right.count("POSITIVE"), right.count("NEGATIVE"), right.count("NEUTRAL")," - Errados:", \
+        wrong.count("POSITIVE"), wrong.count("NEGATIVE"), wrong.count("NEUTRAL"))
         
-    print "------------Acertos-----------------"
-    print "Correctos: ", equal, " - Errados:", different
-    print "Taxa de Acerto: {0:.3f}".format(equal/float(len(calculated_polarities)))
+    print ("------------Acertos-----------------")
+    print ("Correctos: ", equal, " - Errados:", different)
+    print ("Taxa de Acerto: {0:.3f}".format(equal/float(len(calculated_polarities))))
     
-    print "------------Precisão-----------------"
-    print "Positivos: {0:.3f}".format(right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE")))
-    print "Negativos: {0:.3f}".format(right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE")))
-    print "Neutros: {0:.3f}".format(right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL")))
+    print ("------------Precisão-----------------")
+    print ("Positivos: {0:.3f}".format(right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))))
+    print ("Negativos: {0:.3f}".format(right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))))
+    print ("Neutros: {0:.3f}".format(right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))))
 
-    print "------------Cobertura-----------------"
-    print "Positivos: {0:.3f}".format(right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE")))
-    print "Negativos: {0:.3f}".format(right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE")))
-    print "Neutros: {0:.3f}".format(right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL")))
+    print ("------------Cobertura-----------------")
+    print ("Positivos: {0:.3f}".format(right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE"))))
+    print ("Negativos: {0:.3f}".format(right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE"))))
+    print ("Neutros: {0:.3f}".format(right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL"))))
     
-    print "------------Medida-F-----------------"
-    print "Positivos: {0:.3f}".format(2*((right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))*right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE")))/  \
-                                         (right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))+right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE")))))
-    print "Negativos: {0:.3f}".format(2*((right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))*right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE")))/  \
-                                         (right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))+right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE")))))
-    print "Neutros: {0:.3f}".format(2*((right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))*right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL")))/  \
-                                         (right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))+right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL")))))               
+    print ("------------Medida-F-----------------")
+    print ("Positivos: {0:.3f}".format(2*((right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))*right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE")))/  \
+                                         (right.count("POSITIVE")/float(right.count("POSITIVE")+wrong.count("POSITIVE"))+right.count("POSITIVE")/float(polarities_calculated.count("POSITIVE"))))))
+    print ("Negativos: {0:.3f}".format(2*((right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))*right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE")))/  \
+                                         (right.count("NEGATIVE")/float(right.count("NEGATIVE")+wrong.count("NEGATIVE"))+right.count("NEGATIVE")/float(polarities_calculated.count("NEGATIVE"))))))
+    print ("Neutros: {0:.3f}".format(2*((right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))*right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL")))/  \
+                                         (right.count("NEUTRAL")/float(right.count("NEUTRAL")+wrong.count("NEUTRAL"))+right.count("NEUTRAL")/float(polarities_calculated.count("NEUTRAL"))))))               
                                       
              
 if __name__ == '__main__':
     #nltk.download()
     
-    conn = sqlite3.connect('dataset.db')
+    conn = sqlite3.connect('src/dataset.db')
     conn.text_factory = str
     c = conn.cursor()
     
@@ -508,4 +508,4 @@ if __name__ == '__main__':
     
     end = datetime.now()
     time = end - start
-    print time
+    print (time)
