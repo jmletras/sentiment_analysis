@@ -1,6 +1,4 @@
-# sentiment_analysis
-
-Online Reputation Sensor: machine learning techniques for detection and classification of opinions in Web textual sources
+# Online Reputation Sensor: machine learning techniques for detection and classification of opinions in Web textual sources
 
 The purpose of this work is to present a system with the ability to predict, through machine
 learning techniques, the sense of a sentence and the respective reputation impact on the
